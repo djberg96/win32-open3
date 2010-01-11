@@ -3,11 +3,10 @@
 
 = Prerequisites
    Ruby 1.8.2 or later
-   C++ compiler (if building from source).
+   C++ compiler (if building from source)
    
 = Installation
-   rake test (optional)
-   rake install (non-gem) or rake install_gem (gem)
+   gem install win32-open
    
 = Synopsis
    require 'win32/open3'
@@ -49,14 +48,13 @@
    compiler or to rebuild Ruby from scratch rather than using the installer.
    
 = Precompiled binaries
-
    If you do a typical "gem install win32-open3" you will get a precompiled
    binary appropriate for your platform. If you want to build from source,
    go the project page and download, download the .zip file, and run the
    'install' Rake task from the command line.
    
 = Future Plans
-   Replace the current implementation with a pure Ruby version.
+   Replace the current implementation with a pure Ruby version, if possible.
  
 = More Documentation
    See the doc/open3.txt file for more details.
