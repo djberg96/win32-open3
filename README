@@ -2,11 +2,11 @@
    This library provides an Open3.popen3 implementation for MS Windows.
 
 = Prerequisites
-   Ruby 1.8.2 or later
+   Ruby 1.8.x branch only
    C++ compiler (if building from source)
    
 = Installation
-   gem install win32-open
+   gem install win32-open3
    
 = Synopsis
    require 'win32/open3'
