@@ -4,10 +4,12 @@ require 'rake/testtask'
 require 'rbconfig'
 include Config
 
+make = CONFIG['MAKEFILES'].nil? ? 'nmake' : 'make'
+
 desc 'Install the win32-open3 library'
 task :install => [:build] do
   Dir.chdir('ext'){
-    sh 'nmake install'
+    sh "#{make} install"
   }
 end
 
@@ -15,7 +17,7 @@ desc "Clean any build files for win32-open3"
 task :clean do
   Dir.chdir('ext') do
     if File.exists?('open3.so') || File.exists?('win32/open3.so')
-      sh 'nmake distclean'
+      sh "#{make} distclean"
       rm 'win32/open3.so' if File.exists?('win32/open3.so') 
     end
   end
@@ -24,7 +26,6 @@ end
 
 desc "Build win32-open3 (but don't install it)"
 task :build => [:clean] do
-  make = CONFIG['MAKEFILES'].nil? ? 'nmake' : 'make'
   Dir.chdir('ext') do
     ruby 'extconf.rb'
     sh make
@@ -34,9 +35,9 @@ end
 
 desc "Run the sample program"
 task :example => [:build] do |t|
-   Dir.chdir('examples'){
-      sh 'ruby -I../ext open3_test.rb'
-   }
+  Dir.chdir('examples'){
+    sh 'ruby -I../ext open3_test.rb'
+  }
 end
 
 namespace 'gem' do
@@ -45,7 +46,7 @@ namespace 'gem' do
     Dir["*.gem"].each{ |f| File.delete(f) }
     Dir.chdir('ext') do
       if File.exists?('open3.so') || File.exists?('win32/open3.so')
-        sh 'nmake distclean'
+        sh "#{make} distclean"
         rm 'win32/open3.so' if File.exists?('win32/open3.so') 
       end
     end
@@ -67,7 +68,7 @@ namespace 'gem' do
   task :binary => [:clean] do
     Dir.chdir('ext') do
       ruby 'extconf.rb'
-      sh 'nmake'
+      sh make
     end
 
     mkdir_p 'lib/win32'
@@ -86,12 +87,12 @@ namespace 'gem' do
 end
 
 Rake::TestTask.new('test') do |test|
-   task :test => [:build]
-   test.libs << 'ext'
-   test.warning = true
-   test.verbose = true
+  task :test => [:build]
+  test.libs << 'ext'
+  test.warning = true
+  test.verbose = true
 end
 
 task :test do
-   Rake.application[:clean].execute
+  Rake.application[:clean].execute
 end
