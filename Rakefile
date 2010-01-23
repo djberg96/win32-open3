@@ -23,9 +23,10 @@ end
 
 desc "Build win32-open3 (but don't install it)"
 task :build => [:clean] do
+  make = CONFIG['MAKEFILES'].nil? ? 'nmake' : 'make'
   Dir.chdir('ext') do
     ruby 'extconf.rb'
-    sh 'nmake'
+    sh make
     mv 'open3.so', 'win32' # For the test suite
   end
 end

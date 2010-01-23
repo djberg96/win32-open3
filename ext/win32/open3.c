@@ -287,7 +287,7 @@ static void win32_set_last_status(const int status, const int pid)
 
 static void win32_pipe_finalize(OpenFile *file, int noraise)
 {
-   int status;
+   DWORD status;
 
    if(file->f){
       fclose(file->f);
