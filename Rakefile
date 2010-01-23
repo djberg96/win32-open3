@@ -19,6 +19,7 @@ task :clean do
       rm 'win32/open3.so' if File.exists?('win32/open3.so') 
     end
   end
+  rm_rf 'lib'
 end
 
 desc "Build win32-open3 (but don't install it)"
