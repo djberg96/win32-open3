@@ -7,8 +7,8 @@
   C++ compiler (if building from source)
    
 = Installation
-  gem install win32-open3                    # Build and install from source
-  gem install win32-open3 --platform mingw32 # Install the binary gem
+  gem install win32-open3                        # Build and install from source
+  gem install win32-open3 --platform x86-mingw32 # Install the binary gem
    
 = Synopsis
   require 'win32/open3'
