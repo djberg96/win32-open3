@@ -2,27 +2,17 @@ require 'rake'
 require 'rake/clean'
 require 'rake/testtask'
 require 'rbconfig'
-include Config
 
-make = CONFIG['MAKEFILES'].nil? ? 'nmake' : 'make'
+make = RbConfig::CONFIG['MAKEFILES'].nil? ? 'nmake' : 'make'
 
-desc 'Install the win32-open3 library'
-task :install => [:build] do
-  Dir.chdir('ext'){
-    sh "#{make} install"
-  }
-end
-
-desc "Clean any build files for win32-open3"
-task :clean do
-  Dir.chdir('ext') do
-    if File.exists?('open3.so') || File.exists?('win32/open3.so')
-      sh "#{make} distclean"
-      rm 'win32/open3.so' if File.exists?('win32/open3.so') 
-    end
-  end
-  rm_rf 'lib'
-end
+CLEAN.include(
+  "**/*.gem",
+  "**/*.so",
+  "**/*.o",
+  "**/Makefile",
+  "**/mkmf.log",
+  "lib"
+)
 
 desc "Build win32-open3 (but don't install it)"
 task :build => [:clean] do
@@ -33,6 +23,13 @@ task :build => [:clean] do
   end
 end
 
+desc 'Install the win32-open3 library'
+task :install => [:build] do
+  Dir.chdir('ext'){
+    sh "#{make} install"
+  }
+end
+
 desc "Run the sample program"
 task :example => [:build] do |t|
   Dir.chdir('examples'){
@@ -41,17 +38,6 @@ task :example => [:build] do |t|
 end
 
 namespace 'gem' do
-  desc 'Clean any build files and remove the .gem file'
-  task :clean do
-    Dir["*.gem"].each{ |f| File.delete(f) }
-    Dir.chdir('ext') do
-      if File.exists?('open3.so') || File.exists?('win32/open3.so')
-        sh "#{make} distclean"
-        rm 'win32/open3.so' if File.exists?('win32/open3.so') 
-      end
-    end
-  end
-
   desc 'Build the gem'
   task :build => [:clean] do
     spec = eval(IO.read('win32-open3.gemspec'))
@@ -96,3 +82,5 @@ end
 task :test do
   Rake.application[:clean].execute
 end
+
+task :default => :test
